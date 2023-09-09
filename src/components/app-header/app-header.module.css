@@ -1,0 +1,33 @@
+.app-header {
+    box-sizing: border-box;
+    max-width: 1920px;
+    min-height: 88px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  
+}
+
+.menu-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+}
+
+.list-header{
+    list-style-type: none;
+    gap: 48px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 2fr 1fr;
+    align-items: center;
+
+}
+.link-header {
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+    text-decoration: none;
+    color: inherit;
+}
