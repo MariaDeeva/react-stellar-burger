@@ -24,7 +24,7 @@ function IngredientCards({ title, cardsArr }) {
 
 IngredientCards.propTypes = {
   title: PropTypes.string.isRequired,
-  cardsArr: PropTypes.arrayOf(ingredientPropType).isRequired,
+  cardsArr: PropTypes.arrayOf(ingredientPropType.isRequired).isRequired,
 };
 
 export default IngredientCards;

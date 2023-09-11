@@ -6,7 +6,9 @@ import { data } from '../../utils/data';
 
 
 function BurgerIngredients() {
-    const [current, setCurrent] = useState('bun')
+    const [current, setCurrent] = useState('bun');
+
+    const filterDataByType = (type) => data.filter((el) => el.type === type);
 
     return (
         <section className={styles.section}>
@@ -24,18 +26,9 @@ function BurgerIngredients() {
             </div>
 
             <div className={`${styles['burger-card']} custom-scroll`}>
-                <IngredientCards title="Булки"
-                    cardsArr={data.filter((el) => {
-                        return el.type === "bun";
-                    })} />
-                <IngredientCards title="Соусы"
-                    cardsArr={data.filter((el) => {
-                        return el.type === "sauce";
-                    })} />
-                <IngredientCards title="Начинки"
-                    cardsArr={data.filter((el) => {
-                        return el.type === "main";
-                    })} />
+                <IngredientCards title="Булки" cardsArr={filterDataByType('bun')} />
+                <IngredientCards title="Соусы" cardsArr={filterDataByType('sauce')} />
+                <IngredientCards title="Начинки" cardsArr={filterDataByType('main')} />
             </div>
         </section>
     );
