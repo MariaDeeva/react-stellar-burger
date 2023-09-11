@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-ingredients.module.css';
 import IngredientCards from './ingredient-cards/ingredient-cards';
-import { data } from '../../utils/data';
 
 
-function BurgerIngredients() {
+
+function BurgerIngredients({data}) {
+
     const [current, setCurrent] = useState('bun');
 
     const filterDataByType = (type) => data.filter((el) => el.type === type);

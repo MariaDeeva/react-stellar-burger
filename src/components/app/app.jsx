@@ -7,7 +7,7 @@ import React, { useEffect, useState } from "react";
 
 
 function App() {
-  /*const [data, setData] = useState([]);
+  const [data, setData] = useState([]);
 
   const BaseURL = 'https://norma.nomoreparties.space/api/ingredients ';
 
@@ -26,12 +26,13 @@ function App() {
         console.log(err);
       });
   }, [BaseURL]);
-*/
+
+
   return (
     <div className={styles.app}>
       <AppHeader />
       <main className={styles['app-body']}>
-        <BurgerIngredients />
+        <BurgerIngredients data = {data}/>
         <BurgerConstructor burgerArr={data} />
       </main>
     </div>

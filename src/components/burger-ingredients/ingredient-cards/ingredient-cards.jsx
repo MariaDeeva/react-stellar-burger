@@ -1,21 +1,24 @@
 import React from 'react';
 import IngredientCard from '../ingredient-card/ingredient-card';
 import styles from './ingredient-cards.module.css';
-import  ingredientPropType from '../../../utils/prop-types';
+import ingredientPropType from '../../../utils/prop-types';
 import PropTypes from 'prop-types';
 function IngredientCards({ title, cardsArr }) {
-  
+ console.log(cardsArr);
+
   return (
     <div className={styles.card}>
       <h2 className={`text text_type_main-large pb-6`}>{title}</h2>
-      <div className={`${styles.container} pb-10`}>
-        {cardsArr.map(({ _id, name, price, image }) => (
+      <div className={`${styles.container} pb-10`} >
+        {cardsArr.map(( el ) => (
           <IngredientCard
-            name={name}
-            price={price}
-            image={image}
-            key={_id}
+          name={el.name} 
+          image ={el.image}
+          price ={el.price}
+          el = {el}
+          key={el._id}
           />
+        
         ))}
       </div>
     </div>
