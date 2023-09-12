@@ -11,8 +11,9 @@ export default function Modal({ children, onClose }) {
             if (event.isComposing || event.key === "Escape") {
                 onClose();
             }
+            
         };
-
+      
         document.addEventListener("keydown", handleEscKeyPress);
 
         return () => {
@@ -27,7 +28,7 @@ export default function Modal({ children, onClose }) {
               <div className={styles['modal-button']}> <CloseIcon onClick={onClose}/></div>
             </div>
 
-            <ModalOverlay onClose={onClose} />
+            <ModalOverlay onClick={onClose} />
         </div>,
         document.getElementById("modal-root")
     );

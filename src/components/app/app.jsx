@@ -32,7 +32,7 @@ function App() {
     <div className={styles.app}>
       <AppHeader />
       <main className={styles['app-body']}>
-        <BurgerIngredients data = {data}/>
+        <BurgerIngredients ingredients = {data}/>
         <BurgerConstructor burgerArr={data} />
       </main>
     </div>

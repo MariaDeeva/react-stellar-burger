@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-ingredients.module.css';
 import IngredientCards from './ingredient-cards/ingredient-cards';
+import ingredientPropType from '../../utils/prop-types';
+import PropTypes from 'prop-types';
 
-
-
-function BurgerIngredients({data}) {
+function BurgerIngredients({ ingredients }) {
 
     const [current, setCurrent] = useState('bun');
 
-    const filterDataByType = (type) => data.filter((el) => el.type === type);
+    const filterDataByType = (type) => ingredients.filter((el) => el.type === type);
 
     return (
         <section className={styles.section}>
@@ -35,5 +35,7 @@ function BurgerIngredients({data}) {
     );
 };
 
-
+BurgerIngredients.propTypes = {
+    ingredients: PropTypes.arrayOf(ingredientPropType.isRequired).isRequired,
+};
 export default BurgerIngredients;
