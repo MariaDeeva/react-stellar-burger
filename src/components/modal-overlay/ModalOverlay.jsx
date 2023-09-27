@@ -4,8 +4,6 @@ import PropTypes from "prop-types";
 
 export default function ModalOverlay({ onClick }) {
  
-  console.log(onClick);
-
   return <div className={styles['modal-overlay']} onClick={onClick}></div>;
 }
 

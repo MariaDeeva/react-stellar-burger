@@ -1,18 +1,17 @@
 import styles from "./app.module.css";
-import { data } from "../../utils/data";
 import AppHeader from '../app-header/AppHeader';
 import BurgerIngredients from '../burger-ingredients/BurgerIngredients';
 import BurgerConstructor from '../burger-constructor/BurgerConstructor';
-import React, { useEffect, useState } from "react";
-
+import React, { useEffect, useState} from "react";
+import BurgerContext from '../../utils/BurgerContext';
 
 function App() {
   const [data, setData] = useState([]);
-
-  const BaseURL = 'https://norma.nomoreparties.space/api/ingredients ';
+  const [burgerArr, setBurgerArr] = useState([]);
+  const IngredientURL = 'https://norma.nomoreparties.space/api/ingredients';
 
   useEffect(() => {
-    fetch(BaseURL)
+    fetch(IngredientURL)
       .then((res) => {
         if (res.ok) {
           return res.json();
@@ -25,15 +24,21 @@ function App() {
       .catch((err) => {
         console.log(err);
       });
-  }, [BaseURL]);
+  }, [IngredientURL]);
 
+
+  const handleBurgerClick = (element) => {
+    setBurgerArr((prevState) => [...prevState, element]);
+  }
 
   return (
     <div className={styles.app}>
       <AppHeader />
       <main className={styles['app-body']}>
-        <BurgerIngredients ingredients = {data}/>
-        <BurgerConstructor burgerArr={data} />
+        <BurgerContext.Provider value={{ burgerArr, setBurgerArr, handleBurgerClick }}>
+          <BurgerIngredients ingredients={data} />
+          <BurgerConstructor />
+        </BurgerContext.Provider>
       </main>
     </div>
 
