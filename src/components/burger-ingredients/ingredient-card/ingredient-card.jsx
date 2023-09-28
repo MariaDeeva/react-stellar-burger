@@ -1,25 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './ingredient-card.module.css';
 import ingredientPropType from '../../../utils/prop-types';
 import Modal from '../../modal/Modal';
 import IngredientDetails from '../../ingredient-details/IngredientDetails';
-
+import BurgerContext from '../../../utils/BurgerContext';
 
 function IngredientCard({el}) {
   const [count, setCount] = useState(0);
   const [modalOpen, setModalOpen] = useState(false);
-  
+  const { handleBurgerClick } = useContext(BurgerContext);
+
   const handleModalOpen = () => {
     setModalOpen(true);
   }
-
   const handleClick = () => {
+    handleBurgerClick(el);
+  };
+ /* const handleClick = () => {
     setCount((prev) => {
       return (prev += 1);
     });
-  };
+  };*/
   
   return (
     <div className={styles.card} onClick={handleClick}>
