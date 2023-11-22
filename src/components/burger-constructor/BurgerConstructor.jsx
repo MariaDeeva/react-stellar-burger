@@ -6,17 +6,34 @@ import Modal from '../modal/Modal';
 import OrderDetails from '../order-details/OrderDetails';
 import BurgerContext from '../../utils/BurgerContext';
 import axios from 'axios'
+import { useDispatch, useSelector } from 'react-redux';
+import { addIngredient, removeIngredient, setIngredients } from '../../services/actions/burgerConstructor';
 
 const OrderURL = 'https://norma.nomoreparties.space/api/orders';
 
 function BurgerConstructor() {
 
+  
+  const ingredients = useSelector(state => state.ingredients);
+  const totalPrice = useSelector(state => state.totalPrice);
+  const dispatch = useDispatch(); 
   const { burgerArr } = useContext(BurgerContext);
   const [modalOpen, setModalOpen] = useState(false);
   const [orderNum, setOrderNum] = useState();
   
+  const handleAddIngredient = ingredient => {
+    dispatch(addIngredient(ingredient));
+  };
 
-  const { Bun, ElmArr, totalPrice } = useMemo(() => {
+  const handleRemoveIngredient = index => {
+    dispatch(removeIngredient(index));
+  };
+
+  const handleSetIngredients = ingredients => {
+    dispatch(setIngredients(ingredients));
+  };
+
+  const { Bun, ElmArr} = useMemo(() => {
     return burgerArr.reduce(
       (acc, { type, ...props }) => {
         if (type === 'bun') {

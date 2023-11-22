@@ -3,6 +3,7 @@ import IngredientCard from '../ingredient-card/ingredient-card';
 import styles from './ingredient-cards.module.css';
 import ingredientPropType from '../../../utils/prop-types';
 import PropTypes from 'prop-types';
+
 function IngredientCards({ title, cardsArr }) {
   return (
     <div className={styles.card}>

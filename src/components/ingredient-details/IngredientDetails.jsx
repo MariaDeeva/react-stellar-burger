@@ -2,6 +2,7 @@ import React from 'react';
 import styles from './ingredient-details.module.css';
 import ingredientPropTypes from '../../utils/prop-types'
 
+
 function IngredientDetails({ el }) {
 
     return (

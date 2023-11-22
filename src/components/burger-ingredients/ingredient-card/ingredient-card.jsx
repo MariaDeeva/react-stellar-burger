@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './ingredient-card.module.css';
@@ -6,23 +6,29 @@ import ingredientPropType from '../../../utils/prop-types';
 import Modal from '../../modal/Modal';
 import IngredientDetails from '../../ingredient-details/IngredientDetails';
 import BurgerContext from '../../../utils/BurgerContext';
+import { addSelectedIngredient, removeSelectedIngredient } from '../../../services/actions/ingredientDetails';
+import { useDispatch } from 'react-redux';
+
+
 
 function IngredientCard({el}) {
   const [count, setCount] = useState(0);
   const [modalOpen, setModalOpen] = useState(false);
   const { handleBurgerClick } = useContext(BurgerContext);
 
+  const dispatch = useDispatch();
+
   const handleModalOpen = () => {
+    dispatch(addSelectedIngredient(el));
     setModalOpen(true);
   }
   const handleClick = () => {
     handleBurgerClick(el);
   };
- /* const handleClick = () => {
-    setCount((prev) => {
-      return (prev += 1);
-    });
-  };*/
+  const handleModalClose = useCallback(() => {
+    dispatch(removeSelectedIngredient());
+    setModalOpen(false);
+  }, [dispatch]);
   
   return (
     <div className={styles.card} onClick={handleClick}>
@@ -30,7 +36,7 @@ function IngredientCard({el}) {
       <img className={styles.image} src={el.image} alt={el.name} onClick={handleModalOpen} />
 
       {modalOpen && (
-        <Modal onClose={() => setModalOpen(false)}>
+        <Modal onClose={handleModalClose}>
           <IngredientDetails  el={el}/>
         </Modal>
       )}
