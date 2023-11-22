@@ -4,13 +4,15 @@ import BurgerIngredients from '../burger-ingredients/BurgerIngredients';
 import BurgerConstructor from '../burger-constructor/BurgerConstructor';
 import React, { useEffect, useState} from "react";
 import BurgerContext from '../../utils/BurgerContext';
+import { getIngredients, getIngredientsSuccess } from '../../services/actions/ingredientsFetch';
+import { useDispatch } from "react-redux";
 
 function App() {
-  const [data, setData] = useState([]);
-  const [burgerArr, setBurgerArr] = useState([]);
   const IngredientURL = 'https://norma.nomoreparties.space/api/ingredients';
-
+  const [burgerArr, setBurgerArr] = useState([]);
+  const dispatch = useDispatch();
   useEffect(() => {
+    dispatch(getIngredients());
     fetch(IngredientURL)
       .then((res) => {
         if (res.ok) {
@@ -19,13 +21,12 @@ function App() {
         return Promise.reject(`Ошибка: ${res.status}`);
       })
       .then((data) => {
-        setData(data.data);
+        dispatch(getIngredientsSuccess(data.data));
       })
       .catch((err) => {
         console.log(err);
       });
-  }, [IngredientURL]);
-
+  }, [IngredientURL, dispatch]);
 
   const handleBurgerClick = (element) => {
     setBurgerArr((prevState) => [...prevState, element]);
@@ -36,7 +37,7 @@ function App() {
       <AppHeader />
       <main className={styles['app-body']}>
         <BurgerContext.Provider value={{ burgerArr, setBurgerArr, handleBurgerClick }}>
-          <BurgerIngredients ingredients={data} />
+          <BurgerIngredients />
           <BurgerConstructor />
         </BurgerContext.Provider>
       </main>

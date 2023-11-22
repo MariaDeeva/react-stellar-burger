@@ -4,8 +4,12 @@ import styles from './burger-ingredients.module.css';
 import IngredientCards from './ingredient-cards/ingredient-cards';
 import ingredientPropType from '../../utils/prop-types';
 import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
 
-function BurgerIngredients({ ingredients }) {
+function BurgerIngredients() {
+
+
+  const ingredients = useSelector(state => state.ingredientsReducer.ingredients);
 
     const [current, setCurrent] = useState('bun');
 
