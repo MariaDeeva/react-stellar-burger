@@ -9,22 +9,22 @@ export default function AppHeader() {
 
           <li className='pl-5 pr-5 pb-5 pt-5 '>
             <a href='#' className={headerStyles['link-header']}>
-              <BurgerIcon type="primary" />
-              <p className="text text_type_main-default pl-2 pr-2">Конструктор</p>
+              <BurgerIcon type='primary' />
+              <p className='text text_type_main-default pl-2 pr-2'>Конструктор</p>
             </a>
           </li>
           <li className='pl-5 pr-5 pb-5 pt-5 '>
             <a href='#' className={headerStyles['link-header']}>
-              <ListIcon type="secondary" />
-              <p className="text text_type_main-default text_color_inactive pl-2 pr-2">Лента заказов</p>
+              <ListIcon type='secondary' />
+              <p className='text text_type_main-default text_color_inactive pl-2 pr-2'>Лента заказов</p>
             </a>
           </li>
 
           <Logo />
           <li className='pl-5 pr-5 pb-5 pt-5'>
             <a href='#' className={headerStyles['link-header']}>
-              <ProfileIcon type="secondary" />
-              <p className="text text_type_main-default text_color_inactive pl-2 pr-2">Личный кабинет</p>
+              <ProfileIcon type='secondary' />
+              <p className='text text_type_main-default text_color_inactive pl-2 pr-2'>Личный кабинет</p>
             </a>
           </li>
         </ul>

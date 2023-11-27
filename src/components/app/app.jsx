@@ -1,11 +1,11 @@
-import styles from "./app.module.css";
+import styles from './app.module.css';
 import AppHeader from '../app-header/AppHeader';
 import BurgerIngredients from '../burger-ingredients/BurgerIngredients';
 import BurgerConstructor from '../burger-constructor/BurgerConstructor';
-import React, { useEffect, useState} from "react";
+import React, { useEffect, useState} from 'react';
 import BurgerContext from '../../utils/BurgerContext';
 import { getIngredients, getIngredientsSuccess } from '../../services/actions/ingredientsFetch';
-import { useDispatch } from "react-redux";
+import { useDispatch } from 'react-redux';
 
 function App() {
   const IngredientURL = 'https://norma.nomoreparties.space/api/ingredients';

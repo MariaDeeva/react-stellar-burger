@@ -11,7 +11,7 @@ import { useDispatch } from 'react-redux';
 
 
 
-function IngredientCard({el}) {
+function IngredientCard({ el }) {
   const [count, setCount] = useState(0);
   const [modalOpen, setModalOpen] = useState(false);
   const { handleBurgerClick } = useContext(BurgerContext);
@@ -29,20 +29,28 @@ function IngredientCard({el}) {
     dispatch(removeSelectedIngredient());
     setModalOpen(false);
   }, [dispatch]);
-  
+
+  /*const [, dragRef] = useDrag({
+    type: 'ingredient',
+    item: { id },
+    collect: (monitor) => ({
+      isDrag: monitor.isDragging(),
+    }),
+  });*/
+
   return (
-    <div className={styles.card} onClick={handleClick}>
-      {count > 0 && <Counter count={count} size="default" />}
+    <div className={styles.card} onClick={handleClick} >
+      {count > 0 && <Counter count={count} size='default' />}
       <img className={styles.image} src={el.image} alt={el.name} onClick={handleModalOpen} />
 
       {modalOpen && (
         <Modal onClose={handleModalClose}>
-          <IngredientDetails  el={el}/>
+          <IngredientDetails el={el} />
         </Modal>
       )}
       <div className={styles.price}>
         <span className='text text_type_digits-default pb-1'>{el.price}</span>
-        <CurrencyIcon type="primary" />
+        <CurrencyIcon type='primary' />
       </div>
       <div className={`${styles['name-card']} text text_type_main-default`}>{el.name}</div>
     </div>

@@ -8,7 +8,7 @@ import styles from './burger-element.module.css';
             return elements.flatMap(({ _id, name, price, image, count }) => {
                 const items = Array(count).fill().map((_, index) => (
                     <div key={`${_id}_${index}`} className={styles.elements}>
-                        <DragIcon type="primary" />
+                        <DragIcon type='primary' />
                         <ConstructorElement text={name} price={price} thumbnail={image} />
                     </div>
                 ));

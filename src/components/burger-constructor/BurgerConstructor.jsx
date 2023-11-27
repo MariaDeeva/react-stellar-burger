@@ -15,7 +15,7 @@ function BurgerConstructor() {
 
   
   const ingredients = useSelector(state => state.ingredients);
-  const totalPrice = useSelector(state => state.totalPrice);
+ const [totalPrice, setTotalPrice] = useState(0);
   const dispatch = useDispatch(); 
   const { burgerArr } = useContext(BurgerContext);
   const [modalOpen, setModalOpen] = useState(false);
@@ -32,6 +32,15 @@ function BurgerConstructor() {
   const handleSetIngredients = ingredients => {
     dispatch(setIngredients(ingredients));
   };
+  /*
+const totalPrice = useMemo(
+  () =>            ingredients
+  ? ingredients.reduce((acc, props) => acc + props.price, 0)
+  : 0,
+[ingredients]
+
+);*/
+
 
   const { Bun, ElmArr} = useMemo(() => {
     return burgerArr.reduce(
@@ -64,6 +73,7 @@ function BurgerConstructor() {
     } catch (error) {
       console.error('Ошибка:', error);
     }
+    console.log(totalPrice);
   };
   return (
     <section className={`${styles.section} mt-25`}>
@@ -71,7 +81,7 @@ function BurgerConstructor() {
         <div className={`${styles['burger-bun']} pl-8`}>
           {Bun && Bun.name ? (
             <ConstructorElement
-              type="top"
+              type='top'
               isLocked={true}
               text={`${Bun.name} (верх)`}
               price={Bun.price}
@@ -84,7 +94,7 @@ function BurgerConstructor() {
         <div className={`${styles['burger-bun']} pl-8`}>
           {Bun && Bun.name ? (
             <ConstructorElement
-              type="bottom"
+              type='bottom'
               isLocked={true}
               text={`${Bun.name} (низ)`}
               price={Bun.price}
@@ -95,15 +105,15 @@ function BurgerConstructor() {
       </div>
       <div className={`${styles.order} mr-4 mt-10`}>
         <div className={styles.total}>
-          <span className="text text_type_digits-medium">{totalPrice}</span>
-          <CurrencyIcon type="primary" />
+          <span className='text text_type_digits-medium'>{totalPrice}</span>
+          <CurrencyIcon type='primary' />
         </div>
         {modalOpen && orderNum && (
           <Modal onClose={() => setModalOpen(false)}>
             <OrderDetails orderNum={orderNum} />
           </Modal>
         )}
-        <Button htmlType="button" type="primary" size="large" onClick={handleModalOpen}>
+        <Button htmlType='button' type='primary' size='large' onClick={handleModalOpen}>
           Оформить заказ
         </Button>
       </div>

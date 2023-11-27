@@ -4,10 +4,10 @@ import styles from './ingredient-cards.module.css';
 import ingredientPropType from '../../../utils/prop-types';
 import PropTypes from 'prop-types';
 
-function IngredientCards({ title, cardsArr }) {
+function IngredientCards({ title, cardsArr, id, myRef }) {
   return (
-    <div className={styles.card}>
-      <h2 className={`text text_type_main-large pb-6`}>{title}</h2>
+    <div className={styles.card} ref={myRef}>
+      <h2 className={`text text_type_main-large pb-6`} id={id}>{title}</h2>
       <div className={`${styles.container} pb-10`} >
         {cardsArr.map(( el ) => (
           <IngredientCard
