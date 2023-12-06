@@ -3,7 +3,10 @@ import {
     FETCH_INGREDIENTS_SUCCESS
 } from '../actions/ingredientsFetch';
 
-const initialState = {loading: false, ingredients: []}
+const initialState = {
+  loading: false, 
+  ingredients: []
+}
 
 export const ingredientsReducer = (state = initialState, action) => {
   switch (action.type) {

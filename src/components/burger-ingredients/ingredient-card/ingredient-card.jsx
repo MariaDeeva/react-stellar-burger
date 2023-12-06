@@ -1,5 +1,4 @@
 import React, { useState, useContext, useCallback } from 'react';
-import PropTypes from 'prop-types';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './ingredient-card.module.css';
 import ingredientPropType from '../../../utils/prop-types';
@@ -8,20 +7,21 @@ import IngredientDetails from '../../ingredient-details/IngredientDetails';
 import BurgerContext from '../../../utils/BurgerContext';
 import { addSelectedIngredient, removeSelectedIngredient } from '../../../services/actions/ingredientDetails';
 import { useDispatch } from 'react-redux';
-
-
+import { useDrag } from "react-dnd";
 
 function IngredientCard({ el }) {
-  const [count, setCount] = useState(0);
+  
   const [modalOpen, setModalOpen] = useState(false);
   const { handleBurgerClick } = useContext(BurgerContext);
+  const [count, setCount] = useState(0);
 
   const dispatch = useDispatch();
 
   const handleModalOpen = () => {
     dispatch(addSelectedIngredient(el));
     setModalOpen(true);
-  }
+  };
+
   const handleClick = () => {
     handleBurgerClick(el);
   };
@@ -30,19 +30,22 @@ function IngredientCard({ el }) {
     setModalOpen(false);
   }, [dispatch]);
 
-  /*const [, dragRef] = useDrag({
-    type: 'ingredient',
-    item: { id },
+  const [{ opacity }, dragRef] = useDrag({
+    type: "ingredient",
+    item: el,
     collect: (monitor) => ({
-      isDrag: monitor.isDragging(),
+      opacity: monitor.isDragging() ? 0.5 : 1,
     }),
-  });*/
+  });
 
   return (
-    <div className={styles.card} onClick={handleClick} >
+    <div className={styles.card} ref={dragRef} onClick={handleClick} >
       {count > 0 && <Counter count={count} size='default' />}
-      <img className={styles.image} src={el.image} alt={el.name} onClick={handleModalOpen} />
-
+      <img className={styles.image}
+        src={el.image}
+        alt={el.name}
+        style={{ opacity }}
+        onClick={handleModalOpen} />
       {modalOpen && (
         <Modal onClose={handleModalClose}>
           <IngredientDetails el={el} />
@@ -56,8 +59,8 @@ function IngredientCard({ el }) {
     </div>
   );
 }
-
 IngredientCard.propTypes = {
   el: ingredientPropType,
 };
+
 export default IngredientCard;

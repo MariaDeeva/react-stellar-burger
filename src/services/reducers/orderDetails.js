@@ -3,38 +3,34 @@ import {
     ORDER_NUMBER_SUCCESS,
     ORDER_NUMBER_FAILURE,
     ORDER_NUMBER_CLEAR,
-  } from '../actions/submit-order';
+  } from '../actions/orderDetails';
   
   const orderDetailsState = {
     orderNumber: '',
     loading: false,
     error: '',
   };
-  
   export const orderDetailsReducer = (state = orderDetailsState, action) => {
     switch (action.type) {
-      case ORDER_NUMBER_REQUEST: {
-        return { orderNumber: '', loading: true, error: '' };
-      }
-      case ORDER_NUMBER_SUCCESS: {
+      case ORDER_NUMBER_REQUEST:
+        return { ...state, orderNumber: '', loading: true, error: '' };
+      case ORDER_NUMBER_SUCCESS:
         return {
+          ...state,
           loading: false,
           error: '',
           orderNumber: action.payload,
         };
-      }
-      case ORDER_NUMBER_FAILURE: {
+      case ORDER_NUMBER_FAILURE:
         return {
+          ...state,
           loading: false,
           error: action.payload,
           orderNumber: '',
         };
-      }
-      case ORDER_NUMBER_CLEAR: {
-        return { orderNumber: '', loading: false, error: '' };
-      }
-      default: {
+      case ORDER_NUMBER_CLEAR:
+        return { ...state, orderNumber: '', loading: false, error: '' };
+      default:
         return state;
-      }
     }
   };

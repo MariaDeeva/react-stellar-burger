@@ -23,7 +23,6 @@ function IngredientCards({ title, cardsArr, id, myRef }) {
     </div>
   );
 }
-
 IngredientCards.propTypes = {
   title: PropTypes.string.isRequired,
   cardsArr: PropTypes.arrayOf(ingredientPropType.isRequired).isRequired,

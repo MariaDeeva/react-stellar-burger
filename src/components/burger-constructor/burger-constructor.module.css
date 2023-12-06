@@ -22,6 +22,9 @@
     max-width: 536px;
     width: 100%;
 }
+.burger-bun :last-child{
+    row-gap: 8px;
+}
 
 .order {
     display: flex;
@@ -35,4 +38,13 @@
 .total {
     display: flex;
     column-gap: 8px;
+}
+
+.scroll {
+    width: 584px;
+    padding: 0;
+    max-height: 464px;
+    overflow: hidden;
+    overflow-y: scroll;
+    margin: 0;
 }

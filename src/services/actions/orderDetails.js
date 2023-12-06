@@ -1,10 +1,11 @@
 import axios from 'axios';
+import {API_URL} from '../../utils/api'
 export const ORDER_NUMBER_REQUEST = 'ORDER_NUMBER_REQUEST';
 export const ORDER_NUMBER_SUCCESS = 'ORDER_NUMBER_SUCCESS';
 export const ORDER_NUMBER_FAILURE = 'ORDER_NUMBER_FAILURE';
 export const ORDER_NUMBER_CLEAR = 'ORDER_NUMBER_CLEAR';
 
-const IngredientURL = 'https://norma.nomoreparties.space/api';
+
 export const orderNumberRequest = () => {
   return {
     type: ORDER_NUMBER_REQUEST,
@@ -43,7 +44,7 @@ export const submitOrderAndGetId = (dataArray, callback) => {
 
     const getOrderNum = {
       method: 'post',
-      url: `${IngredientURL}/orders`,
+      url: `${API_URL}/orders`,
       headers: {
         'Content-Type': 'application/json',
       },

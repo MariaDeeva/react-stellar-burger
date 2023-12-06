@@ -2,18 +2,20 @@ import styles from './app.module.css';
 import AppHeader from '../app-header/AppHeader';
 import BurgerIngredients from '../burger-ingredients/BurgerIngredients';
 import BurgerConstructor from '../burger-constructor/BurgerConstructor';
-import React, { useEffect, useState} from 'react';
-import BurgerContext from '../../utils/BurgerContext';
+import React, { useEffect, useState } from 'react';
 import { getIngredients, getIngredientsSuccess } from '../../services/actions/ingredientsFetch';
 import { useDispatch } from 'react-redux';
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import { API_URL } from '../../utils/api';
 
 function App() {
-  const IngredientURL = 'https://norma.nomoreparties.space/api/ingredients';
-  const [burgerArr, setBurgerArr] = useState([]);
+  
   const dispatch = useDispatch();
+
   useEffect(() => {
     dispatch(getIngredients());
-    fetch(IngredientURL)
+    fetch(`${API_URL}/ingredients`)
       .then((res) => {
         if (res.ok) {
           return res.json();
@@ -26,20 +28,17 @@ function App() {
       .catch((err) => {
         console.log(err);
       });
-  }, [IngredientURL, dispatch]);
+  }, [`${API_URL}/ingredients`, dispatch]);
 
-  const handleBurgerClick = (element) => {
-    setBurgerArr((prevState) => [...prevState, element]);
-  }
 
   return (
     <div className={styles.app}>
       <AppHeader />
       <main className={styles['app-body']}>
-        <BurgerContext.Provider value={{ burgerArr, setBurgerArr, handleBurgerClick }}>
+        <DndProvider backend={HTML5Backend}>
           <BurgerIngredients />
           <BurgerConstructor />
-        </BurgerContext.Provider>
+        </DndProvider>
       </main>
     </div>
 

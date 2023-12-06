@@ -6,7 +6,6 @@ export default function AppHeader() {
     <header className={headerStyles['app-header']}>
       <nav className={headerStyles['menu-header']} >
         <ul className={`${headerStyles['list-header']} pb-4 pt-4`} >
-
           <li className='pl-5 pr-5 pb-5 pt-5 '>
             <a href='#' className={headerStyles['link-header']}>
               <BurgerIcon type='primary' />
@@ -19,7 +18,6 @@ export default function AppHeader() {
               <p className='text text_type_main-default text_color_inactive pl-2 pr-2'>Лента заказов</p>
             </a>
           </li>
-
           <Logo />
           <li className='pl-5 pr-5 pb-5 pt-5'>
             <a href='#' className={headerStyles['link-header']}>

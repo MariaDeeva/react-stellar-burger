@@ -24,3 +24,7 @@
 .name-card{
     text-align: center;
 }
+.drag{
+    border-radius: 10px;
+    background-color: rgb(136, 118, 236);
+}

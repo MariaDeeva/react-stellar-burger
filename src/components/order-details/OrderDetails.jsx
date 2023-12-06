@@ -1,8 +1,8 @@
-import React from 'react';
+import React  from 'react';
 import styles from './order-details.module.css';
 import done from '../../images/done1.svg';
 
-export default function OrderDetails({ orderNum }) {
+export default function OrderDetails({orderNum}) {
         return (
           <div className={`${styles.container} pt-30 pb-30`}>
             <h2 className='text text_type_digits-large pb-8'>{orderNum}</h2>

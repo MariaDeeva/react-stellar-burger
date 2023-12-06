@@ -1,37 +1,51 @@
-import { ADD_INGREDIENT, REMOVE_INGREDIENT, SET_INGREDIENTS } from '../actions/burgerConstructor';
+import {
+    ADD_INGREDIENT, 
+    DELETE_CONSTRUCTOR,
+    REORDER_CONSTRUCTOR, 
+    RESET_CONSTRUCTOR
+} from '../actions/burgerConstructor';
+
 
 const initialState = {
-  ingredients: [],
+    bun: false,
+    ingredients: [],
 };
 
-export function constructorReducer (state = initialState, action) {
-  switch (action.type) {
-    case ADD_INGREDIENT: 
-      const addedIngredient = action.payload;
-      
-      return { 
-          ...state, 
-          ingredients: [...state.ingredients, addedIngredient],
-       
-      };
-      
-    case REMOVE_INGREDIENT:
-      const removedIngredients = [...state.ingredients];
-      const removedIngredient = removedIngredients.splice(action.payload, 1)[0];
-      return { 
-          ...state, 
-          ingredients: removedIngredients,
-        
-      };
-      
-    case SET_INGREDIENTS:
-    
-      return { 
-          ...state, 
-          ingredients: action.payload,
-      
-      };
-    default: 
-      return state;
-  }
-}
+export const constructorReducer = (state = initialState, action) => {
+    switch (action.type) {
+        case ADD_INGREDIENT:
+            if (action.payload.type === 'bun') {
+                return {
+                    ...state,
+                    bun: action.payload
+                };
+            }
+            return {
+                ...state,
+                ingredients: [...state.ingredients, action.payload]
+            };
+        case DELETE_CONSTRUCTOR:
+            return {
+                ...state,
+                ingredients: state.ingredients.filter((item) => item.key !== action.payload)
+            };
+        case RESET_CONSTRUCTOR:
+            return {
+                bun: false,
+                ingredients: []
+            };
+        case REORDER_CONSTRUCTOR:
+            const dragIndex = action.dragIndex;
+            const hoverIndex = action.hoverIndex;
+            const ingredients = [...state.ingredients];
+            const draggedIngredient = ingredients[dragIndex];
+            ingredients.splice(dragIndex, 1);
+            ingredients.splice(hoverIndex, 0, draggedIngredient);
+            return {
+                ...state,
+                ingredients: ingredients
+            };
+        default:
+            return state;
+    }
+};

@@ -15,7 +15,6 @@ export function ingredientDetailReducer (state = initialState, action) {
         case REMOVE_SELECTED_INGREDIENT: {
             return { ...state, selectedIngredient: null };
         }
-        // other handlers...
         default: {
             return state;
         }
