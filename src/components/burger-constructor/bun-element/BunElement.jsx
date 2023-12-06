@@ -1,4 +1,7 @@
-
+import styles from './bun-element.module.css';
+import { useSelector } from 'react-redux';
+import { ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
+import PropTypes from 'prop-types';
 function BunElement({ type, position }) {
     const ingredientBun = useSelector(state => state.constructorReducer);
     const { bun } = ingredientBun;
