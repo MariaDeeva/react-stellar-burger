@@ -1,5 +1,5 @@
 import React, { forwardRef } from 'react';
-import IngredientCard from '../ingredient-card/ingredient-card';
+import IngredientCard from '../ingredient-card/IngredientCard';
 import styles from './ingredient-cards.module.css';
 import ingredientPropType from '../../../utils/prop-types';
 import PropTypes from 'prop-types';
