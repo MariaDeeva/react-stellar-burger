@@ -6,30 +6,30 @@ import {
   } from '../actions/orderDetails';
   
   const orderDetailsState = {
-    orderNumber: '',
+    orderNum: '',
     loading: false,
     error: '',
   };
   export const orderDetailsReducer = (state = orderDetailsState, action) => {
     switch (action.type) {
       case ORDER_NUMBER_REQUEST:
-        return { ...state, orderNumber: '', loading: true, error: '' };
+        return { ...state, orderNum: '', loading: true, error: '' };
       case ORDER_NUMBER_SUCCESS:
         return {
           ...state,
           loading: false,
           error: '',
-          orderNumber: action.payload,
+          orderNum: action.payload,
         };
       case ORDER_NUMBER_FAILURE:
         return {
           ...state,
           loading: false,
           error: action.payload,
-          orderNumber: '',
+          orderNum: '',
         };
       case ORDER_NUMBER_CLEAR:
-        return { ...state, orderNumber: '', loading: false, error: '' };
+        return { ...state, orderNum: '', loading: false, error: '' };
       default:
         return state;
     }

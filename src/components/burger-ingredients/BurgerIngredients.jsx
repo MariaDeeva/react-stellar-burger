@@ -8,7 +8,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useInView } from 'react-intersection-observer';
 
 function BurgerIngredients() {
-    const ingredients = useSelector(state => state.ingredientsReducer);
+    const ingredients = useSelector(state => state.ingredientsReducer) || {};
+  
     const [current, setCurrent] = useState('bun');
     const { ref: bunRef, inView: bunView } = useInView({ threshold: 0 });
     const { ref: sauceRef, inView: sauceView } = useInView({ threshold: 0 });
@@ -19,7 +20,7 @@ function BurgerIngredients() {
     }, [bunView, sauceView, mainView]);
 
     const filterIngredients = (type) =>
-        ingredients.ingredients?.filter((el) => el.type === type) || [];
+    ingredients?.ingredients?.filter((el) => el.type === type) || [];
 
     const bunArray = useMemo(() => filterIngredients('bun'), [ingredients.ingredients]);
     const sauceArray = useMemo(() => filterIngredients('sauce'), [ingredients.ingredients]);
@@ -31,6 +32,9 @@ function BurgerIngredients() {
         if (element) element.scrollIntoView({ behavior: 'smooth' });
     };
 
+    if (!ingredients?.ingredients) {
+        return null; 
+    }
 
     return (
         <section className={styles.section}>
@@ -71,7 +75,5 @@ function BurgerIngredients() {
     );
 };
 
-BurgerIngredients.propTypes = {
-    ingredients: PropTypes.arrayOf(ingredientPropType.isRequired).isRequired,
-};
+
 export default BurgerIngredients;

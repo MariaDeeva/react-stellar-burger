@@ -9,20 +9,15 @@ import { v4 as uuidv4 } from 'uuid';
 import OtherElement from './other-element/OtherElement';
 import { ADD_INGREDIENT } from '../../services/actions/burgerConstructor';
 import { useDrop } from 'react-dnd';
-import axios from 'axios';
-import {API_URL} from '../../utils/api'
-
+import { submitOrderAndGetId, clearOrderNumber } from '../../services/actions/orderDetails'
 
 function BurgerConstructor() {
   const [modalOpen, setModalOpen] = useState(false);
   const dispatch = useDispatch();
-  const [orderNum, setOrderNum] = useState();
-
   const ingredientsArr = useSelector(state => state.constructorReducer);
   const ElmArr = useMemo(() => ingredientsArr.ingredients.filter(
     ingredient => ingredient.type !== 'bun'
   ), [ingredientsArr.ingredients]);
-
   //возможно стоимость булки должна умножаться на двое (ingredientsArr.bun ? ingredientsArr.bun.price * 2 : 0)
   const totalPrice = useMemo(() => {
     return (
@@ -31,29 +26,23 @@ function BurgerConstructor() {
     );
   }, [ingredientsArr]);
 
-  async function postOrderData(ingredientsIds) {
-    try {
-      const response = await axios.post(`${API_URL}/orders`, { ingredients: ingredientsIds });
-  
-      if (response.data.success) {
-        setOrderNum(response.data.order.number);
-        setModalOpen(true);
-      } else {
-        console.error('Не удалось получить номер заказа');
-      }
-    } catch (error) {
-      console.error('Ошибка:', error);
-    }
-  }
-  
-  const handleModalOpen = async () => {
-    const ingredientsIds = ingredientsArr.ingredients
-      .filter((ingredient) => ingredient.type !== 'bun')
-      .map((ingredient) => ingredient._id);
-  
-    await postOrderData(ingredientsIds);
+  const data = {
+    "ingredients": [
+      ingredientsArr.bun._id,
+      ...ingredientsArr.ingredients.map((ingredient) => ingredient._id),
+      ingredientsArr.bun._id
+    ]
   };
+  const handleOrderSubmit = () => {
+    // Pass the data array to handleOrderSubmit
+    const dataArray = [
+      ingredientsArr.bun,
+      ...ingredientsArr.ingredients,
+      ingredientsArr.bun,
+    ];
 
+    dispatch(submitOrderAndGetId(dataArray, () => setModalOpen(true)));
+  };
   const [{ isHover }, dropTarget] = useDrop({
     accept: 'ingredient',
     drop: item => {
@@ -96,16 +85,16 @@ function BurgerConstructor() {
           <span className="text text_type_digits-medium">{totalPrice}</span>
           <CurrencyIcon type="primary" />
         </div>
-        {modalOpen && orderNum && (
+        {modalOpen && (
           <Modal onClose={() => setModalOpen(false)}>
-            <OrderDetails orderNum={orderNum} />
+            <OrderDetails />
           </Modal>
         )}
         <Button
           htmlType="button"
           type="primary"
           size="large"
-          onClick={handleModalOpen}>
+          onClick={handleOrderSubmit}>
           Оформить заказ
         </Button>
       </div>

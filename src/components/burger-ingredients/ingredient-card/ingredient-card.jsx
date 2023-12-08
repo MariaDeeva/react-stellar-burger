@@ -11,30 +11,22 @@ import { useDrag } from "react-dnd";
 function IngredientCard({ el }) {
   
   const [modalOpen, setModalOpen] = useState(false);  
-
   const ingredientsArr = useSelector(state => state.constructorReducer);
-  
-  const count = useMemo(() => {
+    const count = useMemo(() => {
     if (ingredientsArr.bun === null) return 0;
-  
-    const bunCount = el.type === 'bun' && el._id === ingredientsArr.bun._id ? 2 : 0;
+      const bunCount = el.type === 'bun' && el._id === ingredientsArr.bun._id ? 2 : 0;
     const ingredientCount = ingredientsArr.ingredients.filter((item) => item._id === el._id).length;
-  
-    return bunCount + ingredientCount;
+      return bunCount + ingredientCount;
   }, [ingredientsArr.ingredients, ingredientsArr.bun, el]);
-
   const dispatch = useDispatch();
-
   const handleModalOpen = () => {
     dispatch(addSelectedIngredient(el));
     setModalOpen(true);
   };
-
   const handleModalClose = useCallback(() => {
     dispatch(removeSelectedIngredient());
     setModalOpen(false);
   }, [dispatch]);
-
   const [{ opacity }, dragRef] = useDrag({
     type: "ingredient",
     item: el,
@@ -42,7 +34,6 @@ function IngredientCard({ el }) {
       opacity: monitor.isDragging() ? 0.5 : 1,
     }),
   });
-
   return (
     <div className={styles.card} ref={dragRef}>
       {count > 0 && <Counter count={count} size='default' />}
