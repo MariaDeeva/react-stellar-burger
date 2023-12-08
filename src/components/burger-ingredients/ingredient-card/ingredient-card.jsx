@@ -1,19 +1,27 @@
-import React, { useState, useContext, useCallback } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './ingredient-card.module.css';
 import ingredientPropType from '../../../utils/prop-types';
 import Modal from '../../modal/Modal';
 import IngredientDetails from '../../ingredient-details/IngredientDetails';
-import BurgerContext from '../../../utils/BurgerContext';
 import { addSelectedIngredient, removeSelectedIngredient } from '../../../services/actions/ingredientDetails';
-import { useDispatch } from 'react-redux';
+import { useDispatch,useSelector  } from 'react-redux';
 import { useDrag } from "react-dnd";
 
 function IngredientCard({ el }) {
   
-  const [modalOpen, setModalOpen] = useState(false);
-  const { handleBurgerClick } = useContext(BurgerContext);
-  const [count, setCount] = useState(0);
+  const [modalOpen, setModalOpen] = useState(false);  
+
+  const ingredientsArr = useSelector(state => state.constructorReducer);
+  
+  const count = useMemo(() => {
+    if (ingredientsArr.bun === null) return 0;
+  
+    const bunCount = el.type === 'bun' && el._id === ingredientsArr.bun._id ? 2 : 0;
+    const ingredientCount = ingredientsArr.ingredients.filter((item) => item._id === el._id).length;
+  
+    return bunCount + ingredientCount;
+  }, [ingredientsArr.ingredients, ingredientsArr.bun, el]);
 
   const dispatch = useDispatch();
 
@@ -22,9 +30,6 @@ function IngredientCard({ el }) {
     setModalOpen(true);
   };
 
-  const handleClick = () => {
-    handleBurgerClick(el);
-  };
   const handleModalClose = useCallback(() => {
     dispatch(removeSelectedIngredient());
     setModalOpen(false);
@@ -39,7 +44,7 @@ function IngredientCard({ el }) {
   });
 
   return (
-    <div className={styles.card} ref={dragRef} onClick={handleClick} >
+    <div className={styles.card} ref={dragRef}>
       {count > 0 && <Counter count={count} size='default' />}
       <img className={styles.image}
         src={el.image}
