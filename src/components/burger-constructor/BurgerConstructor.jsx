@@ -1,79 +1,83 @@
-import React, { useState, useMemo, useContext } from 'react';
+import React, { useState, useMemo } from 'react';
 import styles from './burger-constructor.module.css';
-import BurgerElement from './burger-element/burger-element';
-import { ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import { CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import Modal from '../modal/Modal';
 import OrderDetails from '../order-details/OrderDetails';
-import BurgerContext from '../../utils/BurgerContext';
-import axios from 'axios'
-
-const OrderURL = 'https://norma.nomoreparties.space/api/orders';
+import { useSelector, useDispatch } from "react-redux";
+import BunElement from './bun-element/BunElement';
+import { v4 as uuidv4 } from 'uuid';
+import OtherElement from './other-element/OtherElement';
+import { ADD_INGREDIENT } from '../../services/actions/burgerConstructor';
+import { useDrop } from 'react-dnd';
+import { submitOrderAndGetId, clearOrderNumber } from '../../services/actions/orderDetails'
 
 function BurgerConstructor() {
-
-  const { burgerArr } = useContext(BurgerContext);
   const [modalOpen, setModalOpen] = useState(false);
-  const [orderNum, setOrderNum] = useState();
-  
-
-  const { Bun, ElmArr, totalPrice } = useMemo(() => {
-    return burgerArr.reduce(
-      (acc, { type, ...props }) => {
-        if (type === 'bun') {
-          acc.Bun = props;
-          acc.totalPrice += props.price;
-        } else {
-          acc.ElmArr.push(props);
-          acc.totalPrice += props.price;
-        }
-
-        return acc;
-      },
-      { Bun: null, ElmArr: [], totalPrice: 0 }
+  const dispatch = useDispatch();
+  const ingredientsArr = useSelector(state => state.constructorReducer);
+  const ElmArr = useMemo(() => ingredientsArr.ingredients.filter(
+    ingredient => ingredient.type !== 'bun'
+  ), [ingredientsArr.ingredients]);
+  //возможно стоимость булки должна умножаться на двое (ingredientsArr.bun ? ingredientsArr.bun.price * 2 : 0)
+  const totalPrice = useMemo(() => {
+    return (
+      (ingredientsArr.bun ? ingredientsArr.bun.price : 0) +
+      ingredientsArr.ingredients.reduce((acc, ingredient) => acc + ingredient.price, 0)
     );
-  }, [burgerArr]);
+  }, [ingredientsArr]);
 
-  const handleModalOpen = async () => {
-    try {
-      const ingredientsIds = burgerArr.map((ingredient) => ingredient._id);
-      const response = await axios.post(OrderURL, { ingredients: ingredientsIds });
-
-      if (response.data.success) {
-        setOrderNum(response.data.order.number);
-        setModalOpen(true);
-      } else {
-        console.error('Не удалось получить номер заказа');
-      }
-    } catch (error) {
-      console.error('Ошибка:', error);
-    }
+  const data = {
+    "ingredients": [
+      ingredientsArr.bun._id,
+      ...ingredientsArr.ingredients.map((ingredient) => ingredient._id),
+      ingredientsArr.bun._id
+    ]
   };
-  return (
-    <section className={`${styles.section} mt-25`}>
-      <div className={`${styles.list} custom-scroll pt-4 pl-4`}>
-        <div className={`${styles['burger-bun']} pl-8`}>
-          {Bun && Bun.name ? (
-            <ConstructorElement
-              type="top"
-              isLocked={true}
-              text={`${Bun.name} (верх)`}
-              price={Bun.price}
-              thumbnail={Bun.image}
-            />
-          ) : null}
-        </div>
-        {burgerArr.length !== 0 ? <BurgerElement elements={ElmArr} /> : null}
+  const handleOrderSubmit = () => {
+    // Pass the data array to handleOrderSubmit
+    const dataArray = [
+      ingredientsArr.bun,
+      ...ingredientsArr.ingredients,
+      ingredientsArr.bun,
+    ];
 
+    dispatch(submitOrderAndGetId(dataArray, () => setModalOpen(true)));
+  };
+  const [{ isHover }, dropTarget] = useDrop({
+    accept: 'ingredient',
+    drop: item => {
+      dispatch({
+        type: ADD_INGREDIENT,
+        payload: { ...item, key: uuidv4() }
+      });
+    }
+  });
+
+  return (
+    <section className={`${styles.section} mt-25`} ref={dropTarget}>
+      <div className={`${styles.list}  pt-4 pl-4`}>
         <div className={`${styles['burger-bun']} pl-8`}>
-          {Bun && Bun.name ? (
-            <ConstructorElement
-              type="bottom"
-              isLocked={true}
-              text={`${Bun.name} (низ)`}
-              price={Bun.price}
-              thumbnail={Bun.image}
-            />
-          ) : null}
+          <BunElement
+            type='top'
+            position='(верх)'
+          />
+        </div>
+        <ul className={`${styles.scroll} custom-scroll mt-4 mb-4`} >
+          {ElmArr.map((ingredient, index) => {
+            return (
+              <OtherElement
+                key={ingredient.key}
+                ingredient={ingredient}
+                index={index}
+              />
+            )
+          })}
+        </ul>
+        <div className={`${styles['burger-bun']} pl-8`}>
+          <BunElement
+            type='bottom'
+            position='(низ)'
+          />
         </div>
       </div>
       <div className={`${styles.order} mr-4 mt-10`}>
@@ -81,12 +85,16 @@ function BurgerConstructor() {
           <span className="text text_type_digits-medium">{totalPrice}</span>
           <CurrencyIcon type="primary" />
         </div>
-        {modalOpen && orderNum && (
+        {modalOpen && (
           <Modal onClose={() => setModalOpen(false)}>
-            <OrderDetails orderNum={orderNum} />
+            <OrderDetails />
           </Modal>
         )}
-        <Button htmlType="button" type="primary" size="large" onClick={handleModalOpen}>
+        <Button
+          htmlType="button"
+          type="primary"
+          size="large"
+          onClick={handleOrderSubmit}>
           Оформить заказ
         </Button>
       </div>

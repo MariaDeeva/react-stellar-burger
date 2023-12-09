@@ -1,24 +1,24 @@
-import React, { useEffect } from "react";
-import { createPortal } from "react-dom";
+import React, { useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import styles from './modal.module.css';
-import ModalOverlay from "../modal-overlay/ModalOverlay";
-import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import PropTypes from "prop-types";
+import ModalOverlay from '../modal-overlay/ModalOverlay';
+import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import PropTypes from 'prop-types';
 
 export default function Modal({ children, onClose }) {
     useEffect(() => {
         const handleEscKeyPress = (event) => {
-            if (event.isComposing || event.key === "Escape") {
+            if (event.isComposing || event.key === 'Escape') {
                 event.stopPropagation();
                 onClose();
             }
             
         };
       
-        document.addEventListener("keydown", handleEscKeyPress);
+        document.addEventListener('keydown', handleEscKeyPress);
 
         return () => {
-            document.removeEventListener("keydown", handleEscKeyPress);
+            document.removeEventListener('keydown', handleEscKeyPress);
         };
     }, [onClose]);
      const handleClose = (event) => {
@@ -34,7 +34,7 @@ export default function Modal({ children, onClose }) {
 
             <ModalOverlay onClick={handleClose} />
         </div>,
-        document.getElementById("modal-root")
+        document.getElementById('modal-root')
     );
 }
 

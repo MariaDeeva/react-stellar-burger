@@ -1,0 +1,9 @@
+.overlay {
+    display: flex;
+    flex-direction: row;
+}
+
+.points {
+    padding-right: 8px;
+    align-self: center;
+}

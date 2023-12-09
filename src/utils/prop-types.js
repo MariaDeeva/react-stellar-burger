@@ -1,4 +1,4 @@
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
  const ingredientPropType = PropTypes.shape({
         _id: PropTypes.string.isRequired,
         name: PropTypes.string.isRequired,
@@ -8,7 +8,7 @@ import PropTypes from "prop-types";
         carbohydrates: PropTypes.number,
         calories: PropTypes.number,
         price: PropTypes.number.isRequired,
-        image: PropTypes.string,
+        image: PropTypes.any.isRequired,
         image_mobile: PropTypes.string,
         image_large: PropTypes.string,
         __v: PropTypes.number,
